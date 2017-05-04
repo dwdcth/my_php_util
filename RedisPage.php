@@ -147,7 +147,7 @@ class RedisPage
      * @param $val
      */
     public function del($val) {
-        $this->redis->zRem($this->zKey, $val[$this->scoreKey]);
+        $this->redis->zRem($this->zKey, $val[$this->valKey]);
         $this->redis->hDel($this->key, $val[$this->valKey]);
     }
 

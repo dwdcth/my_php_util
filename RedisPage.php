@@ -169,10 +169,15 @@ class RedisPage
      * @date
      * @param $start
      * @param $end
+     * @param $ascFalg 默认升序排序
      * @return array
      */
-    public function getRange($start, $end) {
-        $tmp = $this->redis->zRange($this->zKey, $start, $end);
+    public function getRange($start, $end, $ascFalg=true) {
+        if($ascFalg){
+            $tmp = $this->redis->zRange($this->zKey, $start, $end);
+        }else{
+            $tmp = $this->redis->zRevRange($this->zKey, $start, $end);
+        }
         if (!$tmp) {
             return [];
         }
@@ -204,16 +209,17 @@ class RedisPage
      * @version 1.0
      * @date
      * @param $page
+     * @param $ascFalg
      * @return array|bool
      */
-    public function getPage($page) {
+    public function getPage($page,$acsFlag=true) {
         if (empty($page)) {
             return false;
         }
 
         $start = ($page - 1) * $this->pageSize;
         $end = $page * $this->pageSize - 1;
-        return $this->getRange($start, $end);
+        return $this->getRange($start, $end, $ascFlag);
     }
 
     /** 获取总数
